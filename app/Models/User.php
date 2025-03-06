@@ -3,10 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Scopes\VerifiedScope;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+//#[ScopedBy([VerifiedScope::class])]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -44,5 +48,24 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted(): void
+    {
+//        static::addGlobalScope('verified', function (Builder $builder) {
+//            $builder->whereNotNull('email_verified_at');
+//        });
+
+//        static::addGlobalScope(new VerifiedScope);
+    }
+
+    public function scopeVerified(Builder $query): Builder
+    {
+        return $query->whereNotNull('email_verified_at');
+    }
+
+    public function scopeTypeOf(Builder $query, string $type): void
+    {
+        $query->where('type', $type);
     }
 }
