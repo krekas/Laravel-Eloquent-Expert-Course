@@ -1,7 +1,13 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return User::create([
+        'name' => 'Taylor',
+        'email' => 'test@test.com',
+        'password' => bcrypt('password'),
+        'birth_date' => '01/25/1990',
+    ]);
 });
