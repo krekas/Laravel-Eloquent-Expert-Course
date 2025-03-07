@@ -3,42 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 
 class HomeController extends Controller
 {
-    public function has()
+    public function count()
     {
-        $users = User::has('projects')->with('projects')->get();
+        $users = User::withCount('projects')->get();
 
         foreach ($users as $user) {
-            print '<div><strong>' . $user->id . ': ' . $user->name . '</strong></div>';
-
-            foreach ($user->projects as $project) {
-                print $project->title .'... ';
-            }
-
+            print '<div><strong>' . $user->id . ': ' . $user->name . '</strong>: ' . $user->projects_count . '</div>';
             print '<hr />';
         }
     }
 
-    public function wherehas()
+    public function max()
     {
-        $users = User::whereHas('projects', function (Builder $query) {
-            $query->where('title', 'LIKE', '%as%');
-        })
-            ->with('projects')
-            ->get();
-
-//        $users = User::whereRelation('projects', 'title', 'LIKE', '%as%')->with('projects')->get();
+        $users = User::withMax('projects', 'id')->get();
 
         foreach ($users as $user) {
-            print '<div><strong>' . $user->id . ': ' . $user->name . '</strong></div>';
-
-            foreach ($user->projects as $project) {
-                print $project->title .'... ';
-            }
-
+            print '<div><strong>' . $user->id . ': ' . $user->name . '</strong>: ' . $user->projects_max_id . '</div>';
             print '<hr />';
         }
     }
