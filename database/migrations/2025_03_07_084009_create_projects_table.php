@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->decimal('price');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

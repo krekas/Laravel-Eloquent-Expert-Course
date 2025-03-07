@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -53,8 +55,31 @@ class User extends Authenticatable
         return $this->hasMany(Project::class);
     }
 
-    public function tasks(): HasManyThrough
+    public function latestProject(): HasOne
     {
-        return $this->hasManyThrough(Task::class, Project::class);
+        return $this->hasOne(Project::class)->latestOfMany();
+    }
+
+    public function oldestProject(): HasOne
+    {
+        return $this->hasOne(Project::class)->oldestOfMany();
+    }
+
+    public function mostExpensiveProject(): HasOne
+    {
+        return $this->hasOne(Project::class)->ofMany('price', 'max');
+    }
+
+    public function projectsWithMultiple(): HasOne
+    {
+        return $this->hasOne(Project::class)->ofMany(['price' => 'max', 'updated_at' => 'min']);
+    }
+
+    public function projectsWithCondition(): HasOne
+    {
+        return $this->hasOne(Project::class)
+            ->ofMany(['price' => 'max', 'updated_at' => 'min'], function (Builder $query) {
+                $query->where('title', 'LIKE', '%something%');
+            });
     }
 }

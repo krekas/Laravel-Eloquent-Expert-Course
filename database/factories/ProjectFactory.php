@@ -13,7 +13,9 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(),
+            'title'      => fake()->sentence(),
+            'price'      => fake()->randomFloat(2, 80, 400),
+            'created_at' => fake()->dateTimeBetween('-6 months'),
 
             'user_id' => User::factory(),
         ];

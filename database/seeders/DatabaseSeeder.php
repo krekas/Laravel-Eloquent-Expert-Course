@@ -17,12 +17,12 @@ class DatabaseSeeder extends Seeder
     {
 //        User::factory(5)->create();
 
-        User::factory(3)
-            ->has(Project::factory(3))
+        User::factory(10)
+            ->has(Project::factory(10))
             ->create();
 
-        User::factory(3)
-            ->has(Project::factory())
+        User::factory()
+            ->has(Project::factory(2)->state(['title' => 'something here']))
             ->create();
     }
 }
