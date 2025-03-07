@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Photo extends Model
 {
@@ -13,8 +13,13 @@ class Photo extends Model
         'photoable_type',
     ];
 
-    public function photoable(): MorphTo
+    public function users(): MorphToMany
     {
-        return $this->morphTo();
+        return $this->morphedByMany(User::class, 'photoable');
+    }
+
+    public function tasks(): MorphToMany
+    {
+        return $this->morphedByMany(Task::class, 'photoable');
     }
 }
