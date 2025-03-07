@@ -2,4 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
+Route::view('/', 'welcome');
+
+Route::get('has', [\App\Http\Controllers\HomeController::class, 'has']);
+Route::get('wherehas', [\App\Http\Controllers\HomeController::class, 'wherehas']);

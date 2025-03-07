@@ -15,13 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(5)->create();
 
-        User::factory(5)
-            ->has(
-                Project::factory()
-                    ->has(Task::factory(5))
-            )
+        User::factory(3)
+            ->has(Project::factory(3))
+            ->create();
+
+        User::factory(3)
+            ->has(Project::factory())
             ->create();
     }
 }
